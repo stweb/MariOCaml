@@ -10,7 +10,7 @@ MariOCaml is an HTML 5 canvas web-browser implementation of the Super Mario Bros
 
 ![Gameplay preview](https://github.com/mahsu/MariOCaml/raw/master/screenshots/preview.gif)
 
-[Try it out!](https://zhanghongbo.me/MariOCaml/)
+[Try it out!](http://zhanghongbo.me/MariOCaml/)
 
 # Build
 
