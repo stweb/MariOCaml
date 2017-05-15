@@ -34,13 +34,12 @@ Note: manually commented exports from generated code - need to find Fable switch
  104k 04-28 14:27 mario.rollup.js # non minify, non zipped WITH COMMENTS
 ```
 
-The production build is 7K byte (gzip)
-3. Open `index.html` to run!
-
 ## Fable F#
+```
   83k mario.rollup.js # non minify, non zipped WITHOUT COMMENTS
   34k mario.min.js    # minify (closure simple), non zipped
   13k mario.min.js.gz # minify (closure simple), gzip -9
+```
 
 ## Comparison between OCAML and F#
   
