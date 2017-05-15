@@ -36,21 +36,20 @@ Note: manually commented exports from generated code - need to find Fable switch
 
 ## Fable F#
 ```
-  83k mario.rollup.js # non minify, non zipped WITHOUT COMMENTS
-  34k mario.min.js    # minify (closure simple), non zipped
   13k mario.min.js.gz # minify (closure simple), gzip -9
+  34k mario.min.js    # minify (closure simple), non zipped
+  83k mario.rollup.js # non minify, non zipped WITHOUT COMMENTS
 ```
 
 ## Comparison between OCAML and F#
   
-At first glance Fable beats Bucklescript on JS code size, but OCAML leaves comments in the rollup.
-Bucklescript generated JS can be compressed better by [Google Closure Compiler](https://developers.google.com/closure/compiler/)
-
 - F# syntax is more lightweight but mostly compatible (see diff on porting commit in GIT)
 - F# tooling is much better thanks to Ionide with live type inference
 - Fable Javascript syntax looks more natural to me and offers auto-complete / type safety
 - OCAML compiler is much faster (Fable has many passes: F# -> .net AST -> Fable -> Babel AST -> Babel -> JS)
-- Bucklescript JS code seems slightly more optimized when using OCAML language features
+- Bucklescript JS code is more optimized when using OCAML language features
+-- ML record types compile to JS arrays in Bucklescript while fable created ES classes with
+-- ML Fable list type is implemented as ES class using TypeScript
 
 ## Key Features
 * 2D Mario platformer that emulates the platformer mechanics of Super Mario Bros.
