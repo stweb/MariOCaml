@@ -1,4 +1,8 @@
+module Viewport
+
 open Actors
+open Mario_util
+open OCaml
 
 type viewport = {
   pos: Actors.xy;
@@ -19,35 +23,34 @@ let make (vx,vy) (mx,my) =
  * viewport is always within bounds of the map, even if it is no longer
  * centered about the origin point. *) 
 let calc_viewport_point cc vc mc = 
-  let vc_half = vc /. 2. in
-  Mario_util.min_float ( Mario_util.max_float (cc -. vc_half) 0. ) ( Mario_util.min_float (mc -. vc) (abs_float(cc -. vc_half)) )
+  let vc_half = vc / 2. in
+  Mario_util.min_float ( Mario_util.max_float (cc - vc_half) 0. ) ( Mario_util.min_float (mc - vc) (abs (cc - vc_half)) )
 
 (* Returns whether a coordinate pair [pos] is inside the viewport [v] *)
 let in_viewport v pos = 
   let margin = 32. in
-  let (v_min_x,v_max_x) = (v.pos.x -. margin, v.pos.x +. v.v_dim.x) in
-  let (v_min_y,v_max_y) = (v.pos.y -. margin, v.pos.y +. v.v_dim.y) in
+  let (v_min_x,v_max_x) = (v.pos.x - margin, v.pos.x + v.v_dim.x) in
+  let (v_min_y,v_max_y) = (v.pos.y - margin, v.pos.y + v.v_dim.y) in
   let (x,y) = (pos.x, pos.y) in 
   x >= v_min_x && x <= v_max_x && y >= v_min_y && y<= v_max_y
 
 (* Returns whether an object is outside of the viewport and below it. This is
  * useful for determining whether to process falling out of screen normally. *)
 let out_of_viewport_below v y = 
-  let v_max_y = v.pos.y +. v.v_dim.y in
+  let v_max_y = v.pos.y + v.v_dim.y in
   y >= v_max_y
 
 (* Converts a x,y [coord] pair in absolute coordinates to coordinates relative
  * to the viewport *)
 let coord_to_viewport viewport coord = 
   { 
-    x = coord.x -. viewport.pos.x;
-    y = coord.y -. viewport.pos.y;
+    x = coord.x - viewport.pos.x;
+    y = coord.y - viewport.pos.y;
   }
 
 (* Update the viewport [vpt] given the new center x,y coordinate pair [ctr] *)
 let update vpt ctr =
   let new_x = calc_viewport_point ctr.x vpt.v_dim.x vpt.m_dim.x in
   let new_y = calc_viewport_point ctr.y vpt.v_dim.y vpt.m_dim.y in
-  let pos = {x = new_x; y = new_y} in
-  {vpt with pos}
+  {vpt with pos = {x = new_x; y = new_y} }
 

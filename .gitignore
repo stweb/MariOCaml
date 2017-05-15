@@ -1,11 +1,4 @@
-*.log
-.DS_Store
-.merlin
-/node_modules/
-*.annot
-*.cmt
-*.mliast
-*.mlast
-*.d
-lib/bs
-.bsdeps
+node_modules
+obj
+bin
+public
