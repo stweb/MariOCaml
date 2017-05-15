@@ -159,18 +159,18 @@ let equals col1 col2 = (get_obj col1).id = (get_obj col2).id
 
 (*Matches the controls being used and updates each of the player's params.*)
 let update_player_keys (player : obj) (controls : controls) : unit =
-  let lr_acc = player.vel.x *. 0.2 in
+  let lr_acc = player.vel.x * 0.2 in
   match controls with
   | CLeft ->
     if not player.crouch then begin
       if player.vel.x > -(player.param.speed)
-      then player.vel.x <- player.vel.x -. (0.4 -. lr_acc);
+      then player.vel.x <- player.vel.x - (0.4 - lr_acc);
       player.dir <- Left
     end
   | CRight ->
     if not player.crouch then begin
       if player.vel.x < player.param.speed
-      then player.vel.x <- player.vel.x +. (0.4 +. lr_acc);
+      then player.vel.x <- player.vel.x + (0.4 + lr_acc);
       player.dir <- Right
     end
   | CUp ->
@@ -178,7 +178,7 @@ let update_player_keys (player : obj) (controls : controls) : unit =
       player.jumping <- true;
       player.grounded <- false;
       player.vel.y <-
-        Mario_util.max_float (player.vel.y - (player_jump + abs_float player.vel.x *. 0.25))
+        Mario_util.max_float (player.vel.y - (player_jump + abs player.vel.x * 0.25))
             player_max_jump
     end
   | CDown ->
@@ -203,13 +203,13 @@ let update_player player keys context =
   let prev_dir = player.dir 
   let prev_vx = abs player.vel.x
   List.iter (update_player_keys player) keys;
-  let v = player.vel.x *. friction in
-  let vel_damped = if abs_float v < 0.1 then 0. else v in
+  let v = player.vel.x * friction in
+  let vel_damped = if abs v < 0.1 then 0. else v in
   player.vel.x <- vel_damped;
   let pl_typ = if player.health <= 1 then SmallM else BigM in
   if not prev_jumping && player.jumping
   then Some (pl_typ, (Sprite.make (SPlayer(pl_typ,Jumping)) player.dir context))
-  else if not (Actors.eq_dir_1d prev_dir player.dir) || (prev_vx=0. && (abs_float player.vel.x) > 0.)
+  else if not (Actors.eq_dir_1d prev_dir player.dir) || (prev_vx=0. && (abs player.vel.x) > 0.)
           && not player.jumping
   then Some (pl_typ, (Sprite.make (SPlayer(pl_typ,Running)) player.dir context))
   else if not (Actors.eq_dir_1d prev_dir  player.dir) && player.jumping && prev_jumping
@@ -224,11 +224,11 @@ let update_player player keys context =
 let update_vel obj =
   if obj.grounded then obj.vel.y <- 0.
   else if obj.param.has_gravity then
-    obj.vel.y <- min (obj.vel.y +. gravity +. abs_float obj.vel.y *. 0.01) max_y_vel
+    obj.vel.y <- min (obj.vel.y + gravity + abs obj.vel.y * 0.01) max_y_vel
 
 let update_pos obj =
-  obj.pos.x <- (obj.vel.x +. obj.pos.x);
-  if obj.param.has_gravity then obj.pos.y <- (obj.vel.y +. obj.pos.y)
+  obj.pos.x <- (obj.vel.x + obj.pos.x);
+  if obj.param.has_gravity then obj.pos.y <- (obj.vel.y + obj.pos.y)
 
 (*Calls two above helper functions to update velocity and position of player.*)
 let process_obj obj mapy =
@@ -242,8 +242,8 @@ let normalize_origin pos (spr:Sprite.sprite) =
   let p = spr.param
   let (box,boy) = p.bbox_offset 
   let (_,bh) = p.bbox_size
-  pos.x <- pos.x -. box;
-  pos.y <- pos.y -. (boy +. bh)
+  pos.x <- pos.x - box;
+  pos.y <- pos.y - (boy + bh)
 
 (*Checks upon collision of block and updates the values of the object.*)
 //let collide_block ?check_x:(check_x=true) dir obj =
@@ -324,7 +324,7 @@ let evolve_player (spr : Sprite.sprite) obj context =
 let spawn_above player_dir obj typ context =
   let item = spawn (SItem typ) context (obj.pos.x, obj.pos.y) in
   let item_obj = get_obj item in
-  item_obj.pos.y <- item_obj.pos.y -. (snd (get_sprite item).param.frame_size);
+  item_obj.pos.y <- item_obj.pos.y - (snd (get_sprite item).param.frame_size);
   item_obj.dir <- opposite_dir player_dir;
   set_vel_to_speed item_obj;
   item
@@ -334,10 +334,10 @@ let get_aabb obj  =
   let spr = ((get_sprite obj).param)  in
   let obj = get_obj obj in
   let (offx, offy) = spr.bbox_offset in
-  let (box,boy) = (obj.pos.x+.offx,obj.pos.y+.offy) in
+  let (box,boy) = (obj.pos.x+offx,obj.pos.y+offy) in
   let (sx,sy) = spr.bbox_size in
   {
-    center = {x=(box+.sx / 2.);y=(boy+.sy / 2.)};
+    center = {x=(box+sx / 2.);y=(boy+sy / 2.)};
     half = {x=sx / 2.;y=sy / 2.};
   }
 
@@ -361,19 +361,19 @@ let check_collision c1 c2 =
   let b2 = get_aabb c2 
   let o1 = get_obj c1 in
   if col_bypass c1 c2 then None else
-  let vx = (b1.center.x) -. (b2.center.x) in
-  let vy = (b1.center.y) -. (b2.center.y) in
-  let hwidths = (b1.half.x) +. (b2.half.x) in
-  let hheights = (b1.half.y) +. (b2.half.y) in
-  if abs_float vx < hwidths && abs_float vy < hheights then begin
-    let ox = hwidths -. abs_float vx in
-    let oy = hheights -. abs_float vy in
+  let vx = (b1.center.x) - (b2.center.x) in
+  let vy = (b1.center.y) - (b2.center.y) in
+  let hwidths = (b1.half.x) + (b2.half.x) in
+  let hheights = (b1.half.y) + (b2.half.y) in
+  if abs vx < hwidths && abs vy < hheights then begin
+    let ox = hwidths - abs vx in
+    let oy = hheights - abs vy in
     if ox >= oy then begin
       if vy > 0. then (o1.pos.y <- (o1.pos.y + oy);  Some North)
-      else (o1.pos.y <- (o1.pos.y -. oy);  Some South)
+      else (o1.pos.y <- (o1.pos.y - oy);  Some South)
     end else begin
       if vx > 0. then (o1.pos.x <- o1.pos.x + ox; Some West)
-      else (o1.pos.x <- o1.pos.x -. ox;  Some East)
+      else (o1.pos.x <- o1.pos.x - ox;  Some East)
     end
   end else None
 

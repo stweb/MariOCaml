@@ -21,7 +21,7 @@ let render sprite (posx,posy) =
   let (sw, sh) = sprite.param.frame_size in
   let (dx, dy) = (posx,posy) in
   let (dw, dh) = sprite.param.frame_size in
-  let sx = sx +. (float_of_int !(sprite.frame)) *. sw in
+  let sx = sx + (float !(sprite.frame)) * sw in
   (*print_endline (string_of_int !(sprite.frame));*)
   (*context?clearRect(0.,0.,sw, sh);*)
   sprite.context.drawImage(U3.Case1(sprite.img), sx, sy, sw, sh, dx, dy, dw, dh)
@@ -52,7 +52,7 @@ let hud (canvas:HTMLCanvasElement) score coins =
 
 (*Displays the fps.*)
 let fps canvas fps_val =
-  let fps_str = int_of_float fps_val |> string_of_int in
+  let fps_str = int fps_val |> string_of_int in
   //let canvas = canvasElementToJsObj canvas in
   //let context = canvasRenderingContext2DToJsObj (canvas?getContext "2d") in
   context.fillText(fps_str, 10., 18.)

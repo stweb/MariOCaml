@@ -1,6 +1,6 @@
 'use strict';
 
-//Object.defineProperty(exports, '__esModule', { value: true });
+Object.defineProperty(exports, '__esModule', { value: true });
 
 const types = new Map();
 function setType(fullName, cons) {
@@ -975,35 +975,6 @@ function reverse$$1(xs) {
     return fold((acc, x) => new List$1(x, acc), new List$1(), xs);
 }
 
-function float_of_int(i) {
-  return i;
-}
-function int_of_float(f) {
-  return f | 0;
-}
-function string_of_int(i) {
-  return toString(i);
-}
-
-function op_PlusDot(a, b) {
-  return a + b;
-}
-function op_MultiplyDot(a, b) {
-  return a * b;
-}
-function op_MinusDot(a, b) {
-  return a - b;
-}
-function op_DivideDot(a, b) {
-  return a / b;
-}
-function abs_float(a) {
-  return Math.abs(a);
-}
-function random_int(min, max) {
-  return min + ~~(Math.random() * (max - min)) | 0;
-}
-
 class part_params {
   constructor(sprite$$1, rot, lifetime) {
     this.sprite = sprite$$1;
@@ -1429,12 +1400,12 @@ function equals$1(col1, col2) {
   return get_obj(col1).id === get_obj(col2).id;
 }
 function update_player_keys(player, controls$$1) {
-  const lr_acc = op_MultiplyDot(player.vel.x, 0.2);
+  const lr_acc = player.vel.x * 0.2;
 
   if (controls$$1.tag === 1) {
     if (!player.crouch) {
       if (player.vel.x < player.param.speed) {
-        player.vel.x = op_PlusDot(player.vel.x, op_PlusDot(0.4, lr_acc));
+        player.vel.x = player.vel.x + (0.4 + lr_acc);
       }
 
       player.dir = new dir_1d(1);
@@ -1443,7 +1414,7 @@ function update_player_keys(player, controls$$1) {
     if (!player.jumping ? player.grounded : false) {
       player.jumping = true;
       player.grounded = false;
-      player.vel.y = max_float(player.vel.y - (player_jump + op_MultiplyDot(abs_float(player.vel.x), 0.25)), player_max_jump);
+      player.vel.y = max_float(player.vel.y - (player_jump + Math.abs(player.vel.x) * 0.25), player_max_jump);
     }
   } else if (controls$$1.tag === 3) {
     if (!player.jumping ? player.grounded : false) {
@@ -1451,7 +1422,7 @@ function update_player_keys(player, controls$$1) {
     }
   } else if (!player.crouch) {
     if (player.vel.x > -player.param.speed) {
-      player.vel.x = op_MinusDot(player.vel.x, op_MinusDot(0.4, lr_acc));
+      player.vel.x = player.vel.x - (0.4 - lr_acc);
     }
 
     player.dir = new dir_1d(0);
@@ -1468,14 +1439,14 @@ function update_player(player, keys, context$$1) {
   iterate(function (controls$$1) {
     update_player_keys(player, controls$$1);
   }, keys);
-  const v = op_MultiplyDot(player.vel.x, friction);
-  const vel_damped = abs_float(v) < 0.1 ? 0 : v;
+  const v = player.vel.x * friction;
+  const vel_damped = Math.abs(v) < 0.1 ? 0 : v;
   player.vel.x = vel_damped;
   const pl_typ$$1 = player.health <= 1 ? new pl_typ(1) : new pl_typ(0);
 
   if (!prev_jumping ? player.jumping : false) {
     return [pl_typ$$1, make(new spawn_typ(0, [pl_typ$$1, new player_typ(1)]), player.dir, context$$1)];
-  } else if (!eq_dir_1d(prev_dir, player.dir) ? true : (prev_vx === 0 ? abs_float(player.vel.x) > 0 : false) ? !player.jumping : false) {
+  } else if (!eq_dir_1d(prev_dir, player.dir) ? true : (prev_vx === 0 ? Math.abs(player.vel.x) > 0 : false) ? !player.jumping : false) {
     return [pl_typ$$1, make(new spawn_typ(0, [pl_typ$$1, new player_typ(2)]), player.dir, context$$1)];
   } else if ((!eq_dir_1d(prev_dir, player.dir) ? player.jumping : false) ? prev_jumping : false) {
     return [pl_typ$$1, make(new spawn_typ(0, [pl_typ$$1, new player_typ(1)]), player.dir, context$$1)];
@@ -1491,18 +1462,18 @@ function update_vel$$1(obj_1) {
   if (obj_1.grounded) {
     obj_1.vel.y = 0;
   } else if (obj_1.param.has_gravity) {
-    if (op_PlusDot(op_PlusDot(obj_1.vel.y, gravity), op_MultiplyDot(abs_float(obj_1.vel.y), 0.01)) < max_y_vel) {
-      obj_1.vel.y = op_PlusDot(op_PlusDot(obj_1.vel.y, gravity), op_MultiplyDot(abs_float(obj_1.vel.y), 0.01));
+    if (obj_1.vel.y + gravity + Math.abs(obj_1.vel.y) * 0.01 < max_y_vel) {
+      obj_1.vel.y = obj_1.vel.y + gravity + Math.abs(obj_1.vel.y) * 0.01;
     } else {
       obj_1.vel.y = max_y_vel;
     }
   }
 }
 function update_pos$$1(obj_1) {
-  obj_1.pos.x = op_PlusDot(obj_1.vel.x, obj_1.pos.x);
+  obj_1.pos.x = obj_1.vel.x + obj_1.pos.x;
 
   if (obj_1.param.has_gravity) {
-    obj_1.pos.y = op_PlusDot(obj_1.vel.y, obj_1.pos.y);
+    obj_1.pos.y = obj_1.vel.y + obj_1.pos.y;
   }
 }
 function process_obj(obj_1, mapy) {
@@ -1604,7 +1575,7 @@ function evolve_block(obj_1, context$$1) {
 function spawn_above(player_dir, obj_1, typ, context$$1) {
   const item$$1 = spawn(new spawn_typ(2, typ), context$$1, obj_1.pos.x, obj_1.pos.y);
   const item_obj = get_obj(item$$1);
-  item_obj.pos.y = op_MinusDot(item_obj.pos.y, get_sprite(item$$1).param.frame_size[1]);
+  item_obj.pos.y = item_obj.pos.y - get_sprite(item$$1).param.frame_size[1];
   item_obj.dir = opposite_dir(player_dir);
   set_vel_to_speed(item_obj);
   return item$$1;
@@ -1612,8 +1583,8 @@ function spawn_above(player_dir, obj_1, typ, context$$1) {
 function get_aabb(obj_1) {
   const spr = get_sprite(obj_1).param;
   const obj_2 = get_obj(obj_1);
-  const patternInput = [op_PlusDot(obj_2.pos.x, spr.bbox_offset[0]), op_PlusDot(obj_2.pos.y, spr.bbox_offset[1])];
-  return new aabb(new xy(op_PlusDot(patternInput[0], spr.bbox_size[0] / 2), op_PlusDot(patternInput[1], spr.bbox_size[1] / 2)), new xy(spr.bbox_size[0] / 2, spr.bbox_size[1] / 2));
+  const patternInput = [obj_2.pos.x + spr.bbox_offset[0], obj_2.pos.y + spr.bbox_offset[1]];
+  return new aabb(new xy(patternInput[0] + spr.bbox_size[0] / 2, patternInput[1] + spr.bbox_size[1] / 2), new xy(spr.bbox_size[0] / 2, spr.bbox_size[1] / 2));
 }
 function col_bypass(c1, c2) {
   const o1 = get_obj(c1);
@@ -1655,28 +1626,28 @@ function check_collision(c1, c2) {
   if (col_bypass(c1, c2)) {
     return null;
   } else {
-    const vx = op_MinusDot(b1.center.x, b2.center.x);
-    const vy = op_MinusDot(b1.center.y, b2.center.y);
-    const hwidths = op_PlusDot(b1.half.x, b2.half.x);
-    const hheights = op_PlusDot(b1.half.y, b2.half.y);
+    const vx = b1.center.x - b2.center.x;
+    const vy = b1.center.y - b2.center.y;
+    const hwidths = b1.half.x + b2.half.x;
+    const hheights = b1.half.y + b2.half.y;
 
-    if (abs_float(vx) < hwidths ? abs_float(vy) < hheights : false) {
-      const ox = op_MinusDot(hwidths, abs_float(vx));
-      const oy = op_MinusDot(hheights, abs_float(vy));
+    if (Math.abs(vx) < hwidths ? Math.abs(vy) < hheights : false) {
+      const ox = hwidths - Math.abs(vx);
+      const oy = hheights - Math.abs(vy);
 
       if (ox >= oy) {
         if (vy > 0) {
           o1.pos.y = o1.pos.y + oy;
           return new dir_2d(0);
         } else {
-          o1.pos.y = op_MinusDot(o1.pos.y, oy);
+          o1.pos.y = o1.pos.y - oy;
           return new dir_2d(1);
         }
       } else if (vx > 0) {
         o1.pos.x = o1.pos.x + ox;
         return new dir_2d(3);
       } else {
-        o1.pos.x = op_MinusDot(o1.pos.x, ox);
+        o1.pos.x = o1.pos.x - ox;
         return new dir_2d(2);
       }
     } else {
@@ -1746,7 +1717,7 @@ function render(sprite$$1, posx, posy) {
   const patternInput_1 = sprite$$1.param.frame_size;
   const patternInput_2 = [posx, posy];
   const patternInput_3 = sprite$$1.param.frame_size;
-  const sx = op_PlusDot(patternInput[0], op_MultiplyDot(float_of_int(sprite$$1.frame.contents), patternInput_1[0]));
+  const sx = patternInput[0] + sprite$$1.frame.contents * patternInput_1[0];
   sprite$$1.context.drawImage(sprite$$1.img, sx, patternInput[1], patternInput_1[0], patternInput_1[1], patternInput_2[0], patternInput_2[1], patternInput_3[0], patternInput_3[1]);
 }
 function draw_bgd(bgd, off_x) {
@@ -1760,15 +1731,15 @@ function clear_canvas(canvas$$1) {
   context_1.clearRect(0, 0, cwidth, cheight);
 }
 function hud(canvas$$1, score, coins) {
-  const score_string = string_of_int(score);
-  const coin_string = string_of_int(coins);
+  const score_string = "" + score;
+  const coin_string = "" + coins;
   const context_1 = canvas$$1.getContext("2d");
   context_1.font = "10px 'Press Start 2P'";
   context_1.fillText("Score: " + score_string, canvas$$1.width - 140, 18);
   context_1.fillText("Coins: " + coin_string, 120, 18);
 }
 function fps(canvas$$1, fps_val) {
-  const fps_str = string_of_int(int_of_float(fps_val));
+  const fps_str = "" + fps_val;
   context$1.fillText(fps_str, 10, 18);
 }
 function game_win(ctx) {
@@ -1786,7 +1757,7 @@ function game_loss(ctx) {
   ctx.fill();
   ctx.fillStyle = "white";
   ctx.font = "20px 'Press Start 2P'";
-  ctx.fillText("GAME OVER. Now try F#", 60, 128);
+  ctx.fillText("GAME OVER. You lose!", 60, 128);
   throw new Error("Game over.");
 }
 
@@ -1885,7 +1856,7 @@ function player_attack_enemy(s1, o1, typ, s2, o2, state, context$$1) {
     case 0:
       const r2 = evolve_enemy(o1.dir, typ, s2, o2, context$$1);
       o1.vel.y = -dampen_jump;
-      o1.pos.y = op_MinusDot(o1.pos.y, 5);
+      o1.pos.y = o1.pos.y - 5;
       return [null, r2];
 
     case 1:
@@ -2220,8 +2191,8 @@ function run_update_particle(state, part) {
 function update_loop(canvas$$1, player, objs, map_dim_0, map_dim_1) {
   const map_dim = [map_dim_0, map_dim_1];
   const ctx = canvas$$1.getContext("2d");
-  const cwidth = op_DivideDot(canvas$$1.width, 1);
-  const cheight = op_DivideDot(canvas$$1.height, 1);
+  const cwidth = canvas$$1.width / 1;
+  const cheight = canvas$$1.height / 1;
   let viewport$$1;
   const tupledArg = [cwidth, cheight];
   viewport$$1 = make$1(tupledArg[0], tupledArg[1], map_dim[0], map_dim[1]);
@@ -2331,6 +2302,10 @@ function keyup(evt) {
   return null;
 }
 
+function random_int(min, max) {
+  return min + ~~(Math.random() * (max - min)) | 0;
+}
+
 function mem_loc(checkloc_0, checkloc_1, loclist) {
   mem_loc: while (true) {
     const checkloc = [checkloc_0, checkloc_1];
@@ -2354,7 +2329,7 @@ function mem_loc(checkloc_0, checkloc_1, loclist) {
 }
 function convert_list(lst) {
   if (lst.tail != null) {
-    return append$$1(ofArray([[lst.head[0], [op_MultiplyDot(lst.head[1][0], 16), op_MultiplyDot(lst.head[1][1], 16)]]]), convert_list(lst.tail));
+    return append$$1(ofArray([[lst.head[0], [lst.head[1][0] * 16, lst.head[1][1] * 16]]]), convert_list(lst.tail));
   } else {
     return new List$1();
   }
@@ -2418,10 +2393,10 @@ function trim_edges(lst, blockw, blockh) {
     if (lst.tail != null) {
       const cx = lst.head[1][0];
       const cy = lst.head[1][1];
-      const pixx = op_MultiplyDot(blockw, 16);
-      const pixy = op_MultiplyDot(blockh, 16);
+      const pixx = blockw * 16;
+      const pixy = blockh * 16;
 
-      if (((cx < 128 ? true : op_MinusDot(pixx, cx) < 528) ? true : cy === 0) ? true : op_MinusDot(pixy, cy) < 48) {
+      if (((cx < 128 ? true : pixx - cx < 528) ? true : cy === 0) ? true : pixy - cy < 48) {
         lst = lst.tail;
         blockw = blockw;
         blockh = blockh;
@@ -2435,29 +2410,29 @@ function trim_edges(lst, blockw, blockh) {
   }
 }
 function generate_ground_stairs(cbx, cby, typ) {
-  const four = ofArray([[typ, [cbx, cby]], [typ, [op_PlusDot(cbx, 1), cby]], [typ, [op_PlusDot(cbx, 2), cby]], [typ, [op_PlusDot(cbx, 3), cby]]]);
-  const three = ofArray([[typ, [op_PlusDot(cbx, 1), op_MinusDot(cby, 1)]], [typ, [op_PlusDot(cbx, 2), op_MinusDot(cby, 1)]], [typ, [op_PlusDot(cbx, 3), op_MinusDot(cby, 1)]]]);
-  const two = ofArray([[typ, [op_PlusDot(cbx, 2), op_MinusDot(cby, 2)]], [typ, [op_PlusDot(cbx, 3), op_MinusDot(cby, 2)]]]);
-  const one = ofArray([[typ, [op_PlusDot(cbx, 3), op_MinusDot(cby, 3)]]]);
+  const four = ofArray([[typ, [cbx, cby]], [typ, [cbx + 1, cby]], [typ, [cbx + 2, cby]], [typ, [cbx + 3, cby]]]);
+  const three = ofArray([[typ, [cbx + 1, cby - 1]], [typ, [cbx + 2, cby - 1]], [typ, [cbx + 3, cby - 1]]]);
+  const two = ofArray([[typ, [cbx + 2, cby - 2]], [typ, [cbx + 3, cby - 2]]]);
+  const one = ofArray([[typ, [cbx + 3, cby - 3]]]);
   return append$$1(four, append$$1(three, append$$1(two, one)));
 }
 function generate_airup_stairs(cbx, cby, typ) {
-  const one = ofArray([[typ, [cbx, cby]], [typ, [op_PlusDot(cbx, 1), cby]]]);
-  const two = ofArray([[typ, [op_PlusDot(cbx, 3), op_MinusDot(cby, 1)]], [typ, [op_PlusDot(cbx, 4), op_MinusDot(cby, 1)]]]);
-  const three = ofArray([[typ, [op_PlusDot(cbx, 4), op_MinusDot(cby, 2)]], [typ, [op_PlusDot(cbx, 5), op_MinusDot(cby, 2)]], [typ, [op_PlusDot(cbx, 6), op_MinusDot(cby, 2)]]]);
+  const one = ofArray([[typ, [cbx, cby]], [typ, [cbx + 1, cby]]]);
+  const two = ofArray([[typ, [cbx + 3, cby - 1]], [typ, [cbx + 4, cby - 1]]]);
+  const three = ofArray([[typ, [cbx + 4, cby - 2]], [typ, [cbx + 5, cby - 2]], [typ, [cbx + 6, cby - 2]]]);
   return append$$1(one, append$$1(two, three));
 }
 function generate_airdown_stairs(cbx, cby, typ) {
-  const three = ofArray([[typ, [cbx, cby]], [typ, [op_PlusDot(cbx, 1), cby]], [typ, [op_PlusDot(cbx, 2), cby]]]);
-  const two = ofArray([[typ, [op_PlusDot(cbx, 2), op_PlusDot(cby, 1)]], [typ, [op_PlusDot(cbx, 3), op_PlusDot(cby, 1)]]]);
-  const one = ofArray([[typ, [op_PlusDot(cbx, 5), op_PlusDot(cby, 2)]], [typ, [op_PlusDot(cbx, 6), op_PlusDot(cby, 2)]]]);
+  const three = ofArray([[typ, [cbx, cby]], [typ, [cbx + 1, cby]], [typ, [cbx + 2, cby]]]);
+  const two = ofArray([[typ, [cbx + 2, cby + 1]], [typ, [cbx + 3, cby + 1]]]);
+  const one = ofArray([[typ, [cbx + 5, cby + 2]], [typ, [cbx + 6, cby + 2]]]);
   return append$$1(three, append$$1(two, one));
 }
 function generate_clouds(cbx, cby, typ, num) {
   if (num === 0) {
     return new List$1();
   } else {
-    return append$$1(ofArray([[typ, [cbx, cby]]]), generate_clouds(op_PlusDot(cbx, 1), cby, typ, num - 1));
+    return append$$1(ofArray([[typ, [cbx, cby]]]), generate_clouds(cbx + 1, cby, typ, num - 1));
   }
 }
 function generate_coins(block_coord) {
@@ -2468,7 +2443,7 @@ function generate_coins(block_coord) {
       if (place_coin === 0) {
         const xc = block_coord.head[1][0];
         const yc = block_coord.head[1][1];
-        return append$$1(ofArray([[0, [xc, op_MinusDot(yc, 16)]]]), generate_coins(block_coord.tail));
+        return append$$1(ofArray([[0, [xc, yc - 16]]]), generate_coins(block_coord.tail));
       } else {
         block_coord = block_coord.tail;
         continue generate_coins;
@@ -2489,10 +2464,10 @@ function choose_block_pattern(blockw, blockh, cbx, cby, prob) {
 
     switch (prob) {
       case 0:
-        if (op_MinusDot(blockw, cbx) > 2) {
-          return ofArray([[stair_typ, [cbx, cby]], [middle_block, [op_PlusDot(cbx, 1), cby]], [stair_typ, [op_PlusDot(cbx, 2), cby]]]);
-        } else if (op_MinusDot(blockw, cbx) > 1) {
-          return ofArray([[block_typ$$1, [cbx, cby]], [block_typ$$1, [op_PlusDot(cbx, 1), cby]]]);
+        if (blockw - cbx > 2) {
+          return ofArray([[stair_typ, [cbx, cby]], [middle_block, [cbx + 1, cby]], [stair_typ, [cbx + 2, cby]]]);
+        } else if (blockw - cbx > 1) {
+          return ofArray([[block_typ$$1, [cbx, cby]], [block_typ$$1, [cbx + 1, cby]]]);
         } else {
           return ofArray([[block_typ$$1, [cbx, cby]]]);
         }
@@ -2507,28 +2482,28 @@ function choose_block_pattern(blockw, blockh, cbx, cby, prob) {
         }
 
       case 2:
-        if (op_MinusDot(blockh, cby) === 1) {
+        if (blockh - cby === 1) {
           return generate_ground_stairs(cbx, cby, stair_typ);
         } else {
           return new List$1();
         }
 
       case 3:
-        if (stair_typ === 0 ? op_MinusDot(blockh, cby) > 3 : false) {
+        if (stair_typ === 0 ? blockh - cby > 3 : false) {
           return generate_airdown_stairs(cbx, cby, stair_typ);
-        } else if (op_MinusDot(blockh, cby) > 2) {
+        } else if (blockh - cby > 2) {
           return generate_airup_stairs(cbx, cby, stair_typ);
         } else {
           return ofArray([[stair_typ, [cbx, cby]]]);
         }
 
       case 4:
-        if (op_MinusDot(op_PlusDot(cby, 3), blockh) === 2) {
+        if (cby + 3 - blockh === 2) {
           return ofArray([[stair_typ, [cbx, cby]]]);
-        } else if (op_MinusDot(op_PlusDot(cby, 3), blockh) === 1) {
-          return ofArray([[stair_typ, [cbx, cby]], [stair_typ, [cbx, op_PlusDot(cby, 1)]]]);
+        } else if (cby + 3 - blockh === 1) {
+          return ofArray([[stair_typ, [cbx, cby]], [stair_typ, [cbx, cby + 1]]]);
         } else {
-          return ofArray([[stair_typ, [cbx, cby]], [stair_typ, [cbx, op_PlusDot(cby, 1)]], [stair_typ, [cbx, op_PlusDot(cby, 2)]]]);
+          return ofArray([[stair_typ, [cbx, cby]], [stair_typ, [cbx, cby + 1]], [stair_typ, [cbx, cby + 2]]]);
         }
 
       case 5:
@@ -2541,12 +2516,12 @@ function choose_block_pattern(blockw, blockh, cbx, cby, prob) {
 }
 function generate_enemies(blockw, blockh, cbx, cby, acc) {
   generate_enemies: while (true) {
-    if (cbx > op_MinusDot(blockw, 32)) {
+    if (cbx > blockw - 32) {
       return new List$1();
-    } else if (cby > op_MinusDot(blockh, 1) ? true : cbx < 15) {
+    } else if (cby > blockh - 1 ? true : cbx < 15) {
       blockw = blockw;
       blockh = blockh;
-      cbx = op_PlusDot(cbx, 1);
+      cbx = cbx + 1;
       cby = 0;
       acc = acc;
       continue generate_enemies;
@@ -2554,20 +2529,20 @@ function generate_enemies(blockw, blockh, cbx, cby, acc) {
       blockw = blockw;
       blockh = blockh;
       cbx = cbx;
-      cby = op_PlusDot(cby, 1);
+      cby = cby + 1;
       acc = acc;
       continue generate_enemies;
     } else {
       const prob = random_int(0, 30) | 0;
 
-      if (prob < 3 ? op_MinusDot(blockh, 1) === cby : false) {
-        const enemy = ofArray([[prob, [op_MultiplyDot(cbx, 16), op_MultiplyDot(cby, 16)]]]);
-        return append$$1(enemy, generate_enemies(blockw, blockh, cbx, op_PlusDot(cby, 1), acc));
+      if (prob < 3 ? blockh - 1 === cby : false) {
+        const enemy = ofArray([[prob, [cbx * 16, cby * 16]]]);
+        return append$$1(enemy, generate_enemies(blockw, blockh, cbx, cby + 1, acc));
       } else {
         blockw = blockw;
         blockh = blockh;
         cbx = cbx;
-        cby = op_PlusDot(cby, 1);
+        cby = cby + 1;
         acc = acc;
         continue generate_enemies;
       }
@@ -2583,7 +2558,7 @@ function generate_block_enemies(block_coord) {
       if (place_enemy === 0) {
         const xc = block_coord.head[1][0];
         const yc = block_coord.head[1][1];
-        return append$$1(ofArray([[enemy_typ$$1, [xc, op_MinusDot(yc, 16)]]]), generate_block_enemies(block_coord.tail));
+        return append$$1(ofArray([[enemy_typ$$1, [xc, yc - 16]]]), generate_block_enemies(block_coord.tail));
       } else {
         block_coord = block_coord.tail;
         continue generate_block_enemies;
@@ -2595,12 +2570,12 @@ function generate_block_enemies(block_coord) {
 }
 function generate_block_locs(blockw, blockh, cbx, cby, acc) {
   generate_block_locs: while (true) {
-    if (op_MinusDot(blockw, cbx) < 33) {
+    if (blockw - cbx < 33) {
       return acc;
-    } else if (cby > op_MinusDot(blockh, 1)) {
+    } else if (cby > blockh - 1) {
       blockw = blockw;
       blockh = blockh;
-      cbx = op_PlusDot(cbx, 1);
+      cbx = cbx + 1;
       cby = 0;
       acc = acc;
       continue generate_block_locs;
@@ -2608,7 +2583,7 @@ function generate_block_locs(blockw, blockh, cbx, cby, acc) {
       blockw = blockw;
       blockh = blockh;
       cbx = cbx;
-      cby = op_PlusDot(cby, 1);
+      cby = cby + 1;
       acc = acc;
       continue generate_block_locs;
     } else {
@@ -2621,14 +2596,14 @@ function generate_block_locs(blockw, blockh, cbx, cby, acc) {
         blockw = blockw;
         blockh = blockh;
         cbx = cbx;
-        cby = op_PlusDot(cby, 1);
+        cby = cby + 1;
         acc = called_acc;
         continue generate_block_locs;
       } else {
         blockw = blockw;
         blockh = blockh;
         cbx = cbx;
-        cby = op_PlusDot(cby, 1);
+        cby = cby + 1;
         acc = acc;
         continue generate_block_locs;
       }
@@ -2644,26 +2619,26 @@ function generate_ground(blockw, blockh, inc, acc) {
       return acc;
     } else if (inc > 10) {
       const skip = random_int(0, 10) | 0;
-      const newacc = append$$1(acc, ofArray([[4, [op_MultiplyDot(inc, 16), op_MultiplyDot(blockh, 16)]]]));
+      const newacc = append$$1(acc, ofArray([[4, [inc * 16, blockh * 16]]]));
 
-      if (skip === 7 ? op_MinusDot(blockw, inc) > 32 : false) {
+      if (skip === 7 ? blockw - inc > 32 : false) {
         blockw = blockw;
         blockh = blockh;
-        inc = op_PlusDot(inc, 1);
+        inc = inc + 1;
         acc = acc;
         continue generate_ground;
       } else {
         blockw = blockw;
         blockh = blockh;
-        inc = op_PlusDot(inc, 1);
+        inc = inc + 1;
         acc = newacc;
         continue generate_ground;
       }
     } else {
-      const newacc_1 = append$$1(acc, ofArray([[4, [op_MultiplyDot(inc, 16), op_MultiplyDot(blockh, 16)]]]));
+      const newacc_1 = append$$1(acc, ofArray([[4, [inc * 16, blockh * 16]]]));
       blockw = blockw;
       blockh = blockh;
-      inc = op_PlusDot(inc, 1);
+      inc = inc + 1;
       acc = newacc_1;
       continue generate_ground;
     }
@@ -2726,8 +2701,8 @@ function generate_helper(blockw, blockh, cx, cy, context) {
   return append$$1(all_blocks, append$$1(obj_converted_enemies, append$$1(coin_objects, append$$1(obj_enemy_blocks, ofArray([obj_panel])))));
 }
 function generate(w, h, context) {
-  const blockw = op_DivideDot(w, 16);
-  const blockh = op_MinusDot(op_DivideDot(h, 16), 1);
+  const blockw = w / 16;
+  const blockh = h / 16 - 1;
   const collide_list = generate_helper(blockw, blockh, 0, 0, context);
   const player = spawn(new spawn_typ(0, [new pl_typ(1), new player_typ(0)]), context, 100, 224);
   return [player, collide_list];
@@ -2781,7 +2756,6 @@ window.addEventListener("load", function (_arg1) {
   return null;
 });
 
-/*
 exports.loadCount = loadCount;
 exports.imgsToLoad = imgsToLoad;
 exports.level_width = level_width;
@@ -2790,4 +2764,3 @@ exports.elementToCanvasElement = elementToCanvasElement;
 exports.load = load;
 exports.inc_counter = inc_counter;
 exports.preload = preload;
-*/

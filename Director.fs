@@ -72,7 +72,7 @@ let player_attack_enemy s1 o1 typ s2 o2 state context =
   | GKoopaShell | RKoopaShell ->
       let r2 = evolve_enemy o1.dir typ s2 o2 context in
       o1.vel.y <- -dampen_jump;
-      o1.pos.y <- o1.pos.y -. 5.;
+      o1.pos.y <- o1.pos.y - 5.;
       (None,r2)
   | _ ->
       dec_health o2;
@@ -133,10 +133,10 @@ let obj_at_pos dir (pos: xy) (collids: Object.collidable list)
                                             : Object.collidable list =
   match dir with
   | Left -> List.filter (fun (col: Object.collidable) ->
-      (get_obj col).pos.y = pos.y && (get_obj col).pos.x = pos.x -. 16.)
+      (get_obj col).pos.y = pos.y && (get_obj col).pos.x = pos.x - 16.)
             collids
   | _ -> List.filter (fun (col: Object.collidable) ->
-      (get_obj col).pos.y = pos.y && (get_obj col).pos.x = pos.x +. 16.)
+      (get_obj col).pos.y = pos.y && (get_obj col).pos.x = pos.x + 16.)
             collids
 
 (* Returns whether the object at a given position is a block *)
@@ -259,8 +259,8 @@ let rec narrow_phase c cs state =
             if (get_obj h).id <> c_obj.id then
               (*( (if (if is_rkoopa c then
               begin match c_obj.dir with
-              | Left -> is_block c_obj.dir {x= c_obj.pos.x -. 16.; y= c_obj.pos.y -. 27.} cs
-              | _ -> is_block c_obj.dir {x= c_obj.pos.x +. 16.; y= c_obj.pos.y -. 27.} cs
+              | Left -> is_block c_obj.dir {x= c_obj.pos.x - 16.; y= c_obj.pos.y - 27.} cs
+              | _ -> is_block c_obj.dir {x= c_obj.pos.x + 16.; y= c_obj.pos.y - 27.} cs
               end else false) then rev_dir c_obj RKoopa (Object.get_sprite c) else
               ());*)
               process_collision dir c h state
@@ -370,8 +370,8 @@ let run_update_particle state part =
 let update_loop (canvas:HTMLCanvasElement)  (player,objs) map_dim =
   let scale = 1. in
   let ctx = canvas.getContext_2d() in
-  let cwidth = canvas.width /. scale in
-  let cheight = canvas.height /. scale in
+  let cwidth = canvas.width / scale in
+  let cheight = canvas.height / scale in
   let viewport = Viewport.make (cwidth,cheight) map_dim in
   let state = {
       bgd = Sprite.make_bgd ctx;

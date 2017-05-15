@@ -25,7 +25,7 @@ let rec mem_loc (checkloc: float * float) (loclist: obj_coord list) : bool =
 let rec convert_list (lst:obj_coord list) :obj_coord list =
   match lst with
   |[] -> []
-  |(h::t) -> [(fst h, ((fst (snd h))*.16.,(snd (snd h))*.16.))]@(convert_list t)
+  |(h::t) -> [(fst h, ((fst (snd h))*16.,(snd (snd h))*16.))]@(convert_list t)
 
 (*Chooses what type of enemy should be instantiated given typ number*)
 let choose_enemy_typ (typ:int) : enemy_typ =
@@ -62,42 +62,42 @@ let rec trim_edges (lst: obj_coord list) (blockw:float) (blockh: float)
   |[] -> []
   |h::t -> let cx = fst(snd h) in
            let cy = snd(snd h) in
-           let pixx = blockw*.16. in
-           let pixy = blockh*.16. in
-           if(cx<128. || pixx-.cx<528. || cy = 0. || pixy-.cy<48.)
+           let pixx = blockw*16. in
+           let pixy = blockh*16. in
+           if(cx<128. || pixx-cx<528. || cy = 0. || pixy-cy<48.)
             then trim_edges t blockw blockh
            else [h]@trim_edges t blockw blockh
 
 (*Generates a stair formation with block typ being dependent on typ. This type
 * of stair formation requires that the first step be on the ground.*)
 let generate_ground_stairs cbx cby typ =
-  let four = [(typ, (cbx, cby));(typ, (cbx+.1., cby));(typ, (cbx+.2., cby));
-             (typ, (cbx+.3., cby))] in
-  let three = [(typ,(cbx +. 1., cby -. 1.));(typ,(cbx +. 2., cby -. 1.));
-              (typ,(cbx +. 3., cby -. 1.))] in
-  let two = [(typ,(cbx +. 2., cby -. 2.));(typ,(cbx +. 3., cby -. 2.))] in
-  let one = [(typ,(cbx +. 3., cby -. 3.))] in
+  let four = [(typ, (cbx, cby));(typ, (cbx+1., cby));(typ, (cbx+2., cby));
+             (typ, (cbx+3., cby))] in
+  let three = [(typ,(cbx + 1., cby - 1.));(typ,(cbx + 2., cby - 1.));
+              (typ,(cbx + 3., cby - 1.))] in
+  let two = [(typ,(cbx + 2., cby - 2.));(typ,(cbx + 3., cby - 2.))] in
+  let one = [(typ,(cbx + 3., cby - 3.))] in
   four@three@two@one
 
 (*Generates a stair formation going upwards.*)
 let generate_airup_stairs cbx cby typ =
-  let one = [(typ,(cbx, cby));(typ,(cbx +. 1., cby))] in
-  let two = [(typ,(cbx +. 3., cby -. 1.));(typ,(cbx +. 4., cby -. 1.))] in
-  let three = [(typ,(cbx +. 4., cby -. 2.));(typ,(cbx +. 5., cby -. 2.));
-              (typ,(cbx +. 6., cby -. 2.))] in
+  let one = [(typ,(cbx, cby));(typ,(cbx + 1., cby))] in
+  let two = [(typ,(cbx + 3., cby - 1.));(typ,(cbx + 4., cby - 1.))] in
+  let three = [(typ,(cbx + 4., cby - 2.));(typ,(cbx + 5., cby - 2.));
+              (typ,(cbx + 6., cby - 2.))] in
   one@two@three
 
 (*Generates a stair formation going downwards*)
 let generate_airdown_stairs cbx cby typ =
-  let three = [(typ,(cbx, cby));(typ,(cbx +. 1., cby));(typ,(cbx +. 2., cby))]in
-  let two = [(typ,(cbx +. 2., cby +. 1.));(typ,(cbx +. 3., cby +. 1.))] in
-  let one = [(typ,(cbx +. 5., cby +. 2.));(typ,(cbx +. 6., cby +. 2.))] in
+  let three = [(typ,(cbx, cby));(typ,(cbx + 1., cby));(typ,(cbx + 2., cby))]in
+  let two = [(typ,(cbx + 2., cby + 1.));(typ,(cbx + 3., cby + 1.))] in
+  let one = [(typ,(cbx + 5., cby + 2.));(typ,(cbx + 6., cby + 2.))] in
   three@two@one
 
 (*Generates a cloud block platform with some length num.*)
 let rec generate_clouds cbx cby typ num =
   if(num = 0) then []
-  else [(typ,(cbx, cby))]@generate_clouds (cbx+.1.) cby typ (num-1)
+  else [(typ,(cbx, cby))]@generate_clouds (cbx+1.) cby typ (num-1)
 
 (*Generates an obj_coord list (typ, coordinates) of coins to be placed.*)
 let rec generate_coins (block_coord: obj_coord list) : obj_coord list =
@@ -108,7 +108,7 @@ let rec generate_coins (block_coord: obj_coord list) : obj_coord list =
   |h::t ->  if(place_coin = 0) then
               let xc = fst(snd h) in
               let yc = snd(snd h) in
-              [(0,(xc,(yc-.16.)))]@generate_coins t
+              [(0,(xc,(yc-16.)))]@generate_coins t
             else generate_coins t
 
 (*Chooses the form of the blocks to be placed.
@@ -130,43 +130,43 @@ let choose_block_pattern (blockw:float) (blockh: float) (cbx:float) (cby:float)
     let middle_block = if(life_block_chance = 0) then 3 else stair_typ in
 
     match prob with
-    |0 -> if(blockw -. cbx > 2.) then [(stair_typ, (cbx, cby));
-            (middle_block,(cbx +. 1., cby));(stair_typ,(cbx +. 2., cby))]
-          else if (blockw -. cbx > 1.) then [(block_typ,(cbx, cby));
-            (block_typ,(cbx +. 1., cby))]
+    |0 -> if(blockw - cbx > 2.) then [(stair_typ, (cbx, cby));
+            (middle_block,(cbx + 1., cby));(stair_typ,(cbx + 2., cby))]
+          else if (blockw - cbx > 1.) then [(block_typ,(cbx, cby));
+            (block_typ,(cbx + 1., cby))]
           else [(block_typ,(cbx, cby))]
     |1 -> let num_clouds = (random_int 0 5) + 5 in
           if(cby < 5.) then generate_clouds cbx cby 2 num_clouds
           else []
-    |2 -> if(blockh-.cby = 1.) then generate_ground_stairs cbx cby stair_typ
+    |2 -> if(blockh-cby = 1.) then generate_ground_stairs cbx cby stair_typ
           else []
-    |3 -> if(stair_typ = 0 && blockh -. cby > 3.) then
+    |3 -> if(stair_typ = 0 && blockh - cby > 3.) then
             generate_airdown_stairs cbx cby stair_typ
-          else if (blockh-.cby>2.) then generate_airup_stairs cbx cby stair_typ
+          else if (blockh-cby>2.) then generate_airup_stairs cbx cby stair_typ
           else [(stair_typ,(cbx, cby))]
-    |4 -> if ((cby +. 3.) -. blockh = 2.) then [(stair_typ,(cbx, cby))]
-          else if ((cby +. 3.) -. blockh = 1.) then [(stair_typ, (cbx,cby));
-            (stair_typ, (cbx, cby +. 1.))]
-          else [(stair_typ,(cbx, cby)); (stair_typ,(cbx, cby +. 1.));
-            (stair_typ,(cbx, cby +. 2.))]
+    |4 -> if ((cby + 3.) - blockh = 2.) then [(stair_typ,(cbx, cby))]
+          else if ((cby + 3.) - blockh = 1.) then [(stair_typ, (cbx,cby));
+            (stair_typ, (cbx, cby + 1.))]
+          else [(stair_typ,(cbx, cby)); (stair_typ,(cbx, cby + 1.));
+            (stair_typ,(cbx, cby + 2.))]
     |5 -> [(3,(cbx, cby))]
     |_ -> failwith "Shouldn't reach here" in
 
 (*Generates a list of enemies to be placed on the ground.*)
 let rec generate_enemies (blockw: float) (blockh: float) (cbx: float)
                     (cby: float) (acc: obj_coord list) =
-  if(cbx > (blockw-.32.)) then []
-  else if (cby > (blockh-. 1.) ||  cbx < 15.) then
-    generate_enemies blockw blockh (cbx +. 1.) 0. acc
+  if(cbx > (blockw-32.)) then []
+  else if (cby > (blockh- 1.) ||  cbx < 15.) then
+    generate_enemies blockw blockh (cbx + 1.) 0. acc
   else if(mem_loc (cbx, cby) acc || cby = 0.) then
-    generate_enemies blockw blockh cbx (cby+.1.) acc
+    generate_enemies blockw blockh cbx (cby+1.) acc
   else
     let prob = random_int 0 30 in
     let enem_prob = 3 in
-      if(prob < enem_prob && (blockh -. 1. = cby)) then
-        let enemy = [(prob,(cbx*.16.,cby*.16.))] in
-        enemy@(generate_enemies blockw blockh cbx (cby+.1.) acc)
-      else generate_enemies blockw blockh cbx (cby+.1.) acc
+      if(prob < enem_prob && (blockh - 1. = cby)) then
+        let enemy = [(prob,(cbx*16.,cby*16.))] in
+        enemy@(generate_enemies blockw blockh cbx (cby+1.) acc)
+      else generate_enemies blockw blockh cbx (cby+1.) acc
 
 (*Generates a list of enemies to be placed upon the block objects.*)
 let rec generate_block_enemies (block_coord: obj_coord list) : obj_coord list =
@@ -177,17 +177,17 @@ let rec generate_block_enemies (block_coord: obj_coord list) : obj_coord list =
   |h::t ->  if(place_enemy = 0) then
               let xc = fst(snd h) in
               let yc = snd(snd h) in
-              [(enemy_typ,(xc,(yc-.16.)))]@generate_block_enemies t
+              [(enemy_typ,(xc,(yc-16.)))]@generate_block_enemies t
             else generate_block_enemies t
 
 (*Generates an obj_coord list (typ, coordinates) of blocks to be placed.*)
 let rec generate_block_locs (blockw: float) (blockh: float) (cbx: float)
                     (cby: float) (acc: obj_coord list) : obj_coord list =
-  if(blockw-.cbx<33.) then acc
-  else if (cby > (blockh-. 1.)) then
-    generate_block_locs blockw blockh (cbx+.1.) 0. acc
+  if(blockw-cbx<33.) then acc
+  else if (cby > (blockh- 1.)) then
+    generate_block_locs blockw blockh (cbx+1.) 0. acc
   else if(mem_loc (cbx, cby) acc || cby = 0.) then
-    generate_block_locs blockw blockh cbx (cby+.1.) acc
+    generate_block_locs blockw blockh cbx (cby+1.) acc
   else
     let prob = random_int 0 100 in
     let block_prob = 5 in
@@ -195,8 +195,8 @@ let rec generate_block_locs (blockw: float) (blockh: float) (cbx: float)
         let newacc = choose_block_pattern blockw blockh cbx cby prob in
         let undup_lst = avoid_overlap newacc acc in
         let called_acc = acc@undup_lst in
-        generate_block_locs blockw blockh cbx (cby+.1.) called_acc
-      else generate_block_locs blockw blockh cbx (cby+.1.) acc
+        generate_block_locs blockw blockh cbx (cby+1.) called_acc
+      else generate_block_locs blockw blockh cbx (cby+1.) acc
 
 (*Generates the ending item panel at the end of the level. Games ends upon
 * collision with player.*)
@@ -211,13 +211,13 @@ let rec generate_ground (blockw:float) (blockh:float) (inc:float)
   else
     if(inc > 10.) then
       let skip = random_int 0 10 in
-      let newacc = acc@[(4, (inc*. 16.,blockh *. 16.))] in
-      if (skip = 7 && blockw-.inc>32.)
-      then generate_ground blockw blockh (inc +. 1.) acc
-      else  generate_ground blockw blockh (inc +. 1.) newacc
+      let newacc = acc@[(4, (inc* 16.,blockh * 16.))] in
+      if (skip = 7 && blockw-inc>32.)
+      then generate_ground blockw blockh (inc + 1.) acc
+      else  generate_ground blockw blockh (inc + 1.) newacc
     else 
-      let newacc = acc@[(4, (inc*. 16.,blockh *. 16.))] in
-      generate_ground blockw blockh (inc +. 1.) newacc
+      let newacc = acc@[(4, (inc* 16.,blockh * 16.))] in
+      generate_ground blockw blockh (inc + 1.) newacc
 
 (*Converts the obj_coord list called by generate_block_locs to a list of objects
 * with the coordinates given from the obj_coord list. *)
@@ -281,8 +281,8 @@ let generate_helper (blockw:float) (blockh:float) (cx:float) (cy:float)
 let generate (w:float) (h:float)
                     (context:CanvasRenderingContext2D) :
                     (collidable * collidable list) =
-  let blockw = w/.16. in
-  let blockh = (h/.16.) -. 1. in
+  let blockw = w/16. in
+  let blockh = (h/16.) - 1. in
   let collide_list = generate_helper blockw blockh 0. 0. context in
   let player = Object.spawn (SPlayer(SmallM,Standing)) context (100.,224.) in
   (player, collide_list)
