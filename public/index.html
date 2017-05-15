@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <!--<link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>-->
-  <link rel="stylesheet" href="css/keys.css" type="text/css" />
+  <link rel="stylesheet" href="css/keys.css" type="text/css">
     <style>
       @font-face {
         font-family: 'Press Start 2P';
@@ -56,44 +56,44 @@
         font-size: 8pt;
       }
     </style>
-  </head>
+  <style>@media print {#ghostery-purple-box {display:none !important}}</style></head>
   <body>
-  <a href="https://github.com/bobzhang/MariOCaml"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+  <a href="#"><img style="position: absolute; top: 0; right: 0; border: 0;" alt="Fork me on GitHub" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
   <div class="center">
-    <h1>MariOcaml</h1>
+    <h1>MarioFable port of MariOcaml</h1>
     <canvas id="canvas" width="512" height="256"></canvas>
   </div>
   <div class="center" style="padding:5px">
     <h3>How to play:</h3>
     <table>
-      <tr>
+      <tbody><tr>
         <td>
-          <kbd class="light">&larr;</kbd>/<kbd class="light">A</kbd>&nbsp
-          <kbd class="light">&rarr;</kbd>/<kbd class="light">D</kbd>
+          <kbd class="light">←</kbd>/<kbd class="light">A</kbd>&nbsp;
+          <kbd class="light">→</kbd>/<kbd class="light">D</kbd>
         </td>
         <td>Move left/right</td>
       </tr>
       <tr>
         <td>
-          <kbd class="light">&uarr;</kbd>/<kbd class="light">SPACE</kbd>/<kbd class="light">W</kbd>&nbsp
+          <kbd class="light">↑</kbd>/<kbd class="light">SPACE</kbd>/<kbd class="light">W</kbd>&nbsp;
         </td>
         <td>Jump</td>
       </tr>
       <tr>
         <td>
-          <kbd class="light">&darr;</kbd>&nbsp;<kbd class="light">S</kbd>&nbsp
+          <kbd class="light">↓</kbd>&nbsp;<kbd class="light">S</kbd>&nbsp;
         </td>
         <td>Crouch</td>
       </tr>
       <tr>
         <td>
-          <kbd class="light">B</kbd>&nbsp
+          <kbd class="light">B</kbd>&nbsp;
         </td>
         <td>Toggle draw bounding boxes</td>
       </tr>
-    </table>
+    </tbody></table>
   </div>
         <!--<script src="_build/mario.rollup.js"></script>-->
-        <script src="_build/mario.clsoure.simple.js"></script>
-  </body>
-</html>
+        <!--<script src="ocaml/mario.js"></script>-->
+        <script src="./mario.min.js"></script>
+</body></html>

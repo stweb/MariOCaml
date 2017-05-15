@@ -1,45 +1,53 @@
-TODO UPDATE FOR Fable F#
-
-
-[MariOCaml](https://mahsu.github.io/mariocaml/) using [BuckleScript](https://github.com/bloomberg/bucklescript)
+F# [Fable](hhttp://fable.io/blog/Introducing-1-0-beta.html) port of [MariOCaml](https://mahsu.github.io/mariocaml/) from OCAML [BuckleScript](https://github.com/bloomberg/bucklescript)
 =============
 
-Note this is a port of Mahsu's work to the excellent [BuckleScript](https://github.com/bloomberg/bucklescript) compiler, for the whole
+Fable and Bucklescript are similar projects which both use OCAML (F# is based on OCAML) to compile to JavaScript.
+I ported the OCAML version to F# to compare the two approaches in terms of code readability, tooling and generated code.
+
+[MariOCaml](https://mahsu.github.io/mariocaml/)  is a port of Mahsu's work to the excellent [BuckleScript](https://github.com/bloomberg/bucklescript) compiler, for the whole
 game it generates only *7K* byte gzipped JS and takes 0.57s to build (including the start up time of npm).
 
-
-MariOCaml is an HTML 5 canvas web-browser implementation of the Super Mario Bros platformer written exclusively in OCaml.
+MariOCaml is an HTML 5 canvas web-browser implementation of a well known platformer written exclusively in OCaml.
 
 ![Gameplay preview](https://github.com/mahsu/MariOCaml/raw/master/screenshots/preview.gif)
 
-[Try it out!](http://zhanghongbo.me/MariOCaml/)
+[Try MariOCaml build with Bucklescript](http://zhanghongbo.me/MariOCaml/)
 
-# Build
+# F# Fable 1.x Build & Rollup 
+
+Windows, Max, Linux - requires [.net Core](https://www.microsoft.com/net/download/core)
 
 ```
+dotnet restore
 npm install
-npm run build
+dotnet fable npm-run rollup
 ```
 
-
-# Bundle & Minify
-
-```
-npm run rollup
-npm run closure:simple
-```
-## Size info
+## OCAML/Bucklescript Size info
 
 ```
    7k 04-28 14:27 mario.clsoure.simple.js.gz # minify, zipped production build
 20.3k 04-28 14:27 mario.clsoure.simple.js # minify, non zipped
   15k 04-28 14:27 mario.rollup.js.gz #  zipped
-104.1k 04-28 14:27 mario.rollup.js # non minify, non zipped
+ 104k 04-28 14:27 mario.rollup.js # non minify, non zipped
 ```
 
-The production build is 7K byte
+The production build is 7K byte (gzip)
 3. Open `index.html` to run!
 
+## Fable F#
+  83k mario.rollup.js # non minify, non zipped 
+
+## Comparison between OCAML and F#
+  
+At first flance Fable beats Bucklescript on JS code size, but OCAML leaves comments in the rollup.
+OCAML can be compressed better by [Google Closure Compiler](https://developers.google.com/closure/compiler/)
+
+- F# syntax is more lightweight but mostly compatible (see diff on porting commit in GIT)
+- F# tooling is much better thanks to Ionide with live type inference
+- Fable Javascript syntax looks more natural to me and offers auto-complete / type safety
+- OCAML compiler is much faster (Fable has many passes: F# -> .net AST -> Fable -> Babel AST -> Babel -> JS)
+- OCAML code seems slightly more optimized when using OCAML language features
 
 ## Key Features
 * 2D Mario platformer that emulates the platformer mechanics of Super Mario Bros.
