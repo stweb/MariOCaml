@@ -23,6 +23,8 @@ npm install
 dotnet fable npm-run rollup
 ```
 
+Note: manually commented exports from generated code - need to find Fable switch
+
 ## OCAML/Bucklescript Size info
 
 ```
@@ -37,6 +39,8 @@ The production build is 7K byte (gzip)
 
 ## Fable F#
   83k mario.rollup.js # non minify, non zipped 
+  34k mario.min.js    # minify (closure simple), non zipped
+  13k mario.min.js.gz # minify (closure simple), gzip -9
 
 ## Comparison between OCAML and F#
   

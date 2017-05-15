@@ -2,3 +2,4 @@ node_modules
 obj
 bin
 public
+.DS_Store

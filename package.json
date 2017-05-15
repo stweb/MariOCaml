@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack",
     "start": "webpack-dev-server",
-    "rollup": "rollup -c webrollup.config.js"
+    "rollup": "rollup -c webrollup.config.js",
+    "closure": "java -jar node_modules/google-closure-compiler/compiler.jar --compilation_level SIMPLE --language_out=ES5 public/mario.rollup.js --js_output_file public/mario.min.js"
   },
   "dependencies": {
     "babel-runtime": "^6.23.0",
@@ -19,6 +20,7 @@
     "babel-preset-es2015": "^6.24.0",
     "fable-core": "^1.0.0-narumi-914",
     "fable-loader": "^1.0.0-narumi-912",
+    "google-closure-compiler": "20170423.0.0",
     "rollup": "^0.41.6",
     "rollup-plugin-fable": "^1.0.3",
     "webpack": "^2.2.1",
