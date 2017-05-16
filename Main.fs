@@ -11,7 +11,7 @@ module Pg = ProceduralGenerator
 (*Canvas is chosen from the index.html file. The context is obtained from
  *the canvas. Listeners are added. A level is generated and the general
  *update_loop method is called to make the level playable.*)
-let private load _ =
+let private load() =
   let level_width = 2400.
   let level_height = 256.
   (* Random.self_init(); *)
@@ -27,12 +27,12 @@ let private load _ =
 
 
 (*Used for concurrency issues.*)
-let private preload _ =
+let private preload() =
   let root_dir = "sprites/" 
   let loadCount =  ref 0
   let imgsToLoad = 4
 
-  let inc_counter _ =
+  let inc_counter() =
     loadCount := !loadCount + 1;
     if !loadCount = imgsToLoad then load() else ()
     null
