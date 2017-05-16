@@ -13,7 +13,7 @@ MariOCaml is an HTML 5 canvas web-browser implementation of a well known platfor
 
 [Try MariOCaml build with Bucklescript](http://zhanghongbo.me/MariOCaml/)
 
-# F# Fable 1.x Build & Rollup 
+# F# Fable 1.x BETA Build & Rollup 
 
 Windows, Max, Linux - requires [.net Core](https://www.microsoft.com/net/download/core)
 
@@ -34,7 +34,7 @@ Note: manually commented exports from generated code - need to find Fable switch
  104k 04-28 14:27 mario.rollup.js # non minify, non zipped WITH COMMENTS
 ```
 
-## Fable F#
+## Fable F# - stay tuned for futher improvements
 ```
   13k mario.min.js.gz # minify (closure simple), gzip -9
   34k mario.min.js    # minify (closure simple), non zipped
