@@ -8,17 +8,12 @@ open Fable.Import.Browser
 
 module Pg = ProceduralGenerator
 
-let loadCount =  ref 0
-let imgsToLoad = 4
-let level_width = 2400.
-let level_height = 256.
-
-let elementToCanvasElement el = box el
-
 (*Canvas is chosen from the index.html file. The context is obtained from
  *the canvas. Listeners are added. A level is generated and the general
  *update_loop method is called to make the level playable.*)
-let load _ =
+let private load _ =
+  let level_width = 2400.
+  let level_height = 256.
   (* Random.self_init(); *)
   let canvas_id = "canvas"
   let canvas = document.getElementById(canvas_id) :?> HTMLCanvasElement 
@@ -30,14 +25,17 @@ let load _ =
   |> ignore
   //printfn "asd";
 
-let inc_counter _ =
-  loadCount := !loadCount + 1;
-  if !loadCount = imgsToLoad then load() else ()
-  null
 
 (*Used for concurrency issues.*)
-let preload _ =
+let private preload _ =
   let root_dir = "sprites/" 
+  let loadCount =  ref 0
+  let imgsToLoad = 4
+
+  let inc_counter _ =
+    loadCount := !loadCount + 1;
+    if !loadCount = imgsToLoad then load() else ()
+    null
 
   [ "blocks.png";"items.png";"enemies.png";"mario-small.png" ]
   |> List.iter (fun img_src ->

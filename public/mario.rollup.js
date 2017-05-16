@@ -1,7 +1,3 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
 const types = new Map();
 function setType(fullName, cons) {
     types.set(fullName, cons);
@@ -2709,15 +2705,6 @@ function generate(w, h, context) {
 }
 function init() {}
 
-const loadCount = {
-  contents: 0
-};
-const imgsToLoad = 4;
-const level_width = 2400;
-const level_height = 256;
-function elementToCanvasElement(el) {
-  return el;
-}
 function load(_arg1) {
   const canvas = document.getElementById("canvas");
   const context = canvas.getContext("2d");
@@ -2728,20 +2715,26 @@ function load(_arg1) {
     return keyup(e_1);
   });
   init();
-  const tupledArg = generate(level_width, level_height, context);
-  const tupledArg_1 = [level_width, level_height];
+  const tupledArg = generate(2400, 256, context);
+  const tupledArg_1 = [2400, 256];
   update_loop(canvas, tupledArg[0], tupledArg[1], tupledArg_1[0], tupledArg_1[1]);
 }
-function inc_counter(_arg1) {
-  loadCount.contents = loadCount.contents + 1 | 0;
 
-  if (loadCount.contents === imgsToLoad) {
-    load();
-  }
-
-  return null;
-}
 function preload(_arg1) {
+  const loadCount = {
+    contents: 0
+  };
+
+  const inc_counter = function (_arg2) {
+    loadCount.contents = loadCount.contents + 1 | 0;
+
+    if (loadCount.contents === 4) {
+      load();
+    }
+
+    return null;
+  };
+
   iterate(function (img_src) {
     const img_src_1 = "sprites/" + img_src;
     const img = document.createElement("img");
@@ -2751,16 +2744,8 @@ function preload(_arg1) {
     });
   }, ofArray(["blocks.png", "items.png", "enemies.png", "mario-small.png"]));
 }
+
 window.addEventListener("load", function (_arg1) {
   preload();
   return null;
 });
-
-exports.loadCount = loadCount;
-exports.imgsToLoad = imgsToLoad;
-exports.level_width = level_width;
-exports.level_height = level_height;
-exports.elementToCanvasElement = elementToCanvasElement;
-exports.load = load;
-exports.inc_counter = inc_counter;
-exports.preload = preload;

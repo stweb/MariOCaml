@@ -6,5 +6,5 @@ export default {
   plugins: [
     fable()
   ],
-  format: 'cjs'
+  format: 'es'
 };
