@@ -36,9 +36,10 @@ Note: manually commented exports from generated code - need to find Fable switch
 
 ## Fable F# - stay tuned for futher improvements
 ```
-  13k mario.min.js.gz # minify (closure simple), gzip -9
-  34k mario.min.js    # minify (closure simple), non zipped
-  83k mario.rollup.js # non minify, non zipped WITHOUT COMMENTS
+  9.7k mario.min.js.gz # minify (closure advanced), gzip -9
+  32k mario.min.js     # minify (closure advanced), non zipped
+  49k mario.min.js     # minify (closure simple), non zipped
+  78k mario.rollup.js  # non minify, non zipped WITHOUT COMMENTS
 ```
 
 ## Comparison between OCAML and F#

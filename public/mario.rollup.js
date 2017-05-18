@@ -2705,7 +2705,7 @@ function generate(w, h, context) {
 }
 function init() {}
 
-function load(_arg1) {
+function load() {
   const canvas = document.getElementById("canvas");
   const context = canvas.getContext("2d");
   document.addEventListener("keydown", function (e) {
@@ -2720,12 +2720,12 @@ function load(_arg1) {
   update_loop(canvas, tupledArg[0], tupledArg[1], tupledArg_1[0], tupledArg_1[1]);
 }
 
-function preload(_arg1) {
+function preload() {
   const loadCount = {
     contents: 0
   };
 
-  const inc_counter = function (_arg2) {
+  const inc_counter = function () {
     loadCount.contents = loadCount.contents + 1 | 0;
 
     if (loadCount.contents === 4) {

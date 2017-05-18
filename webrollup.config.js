@@ -1,7 +1,7 @@
 import fable from 'rollup-plugin-fable';
 
 var babelOptions = {
-  presets: ["es2016"],
+  presets: ["es2015"],
   plugins: ["transform-runtime"]
 }
 
@@ -10,7 +10,7 @@ export default {
   dest: './public/mario.rollup.js',
   plugins: [
     fable(
-      { babel: babelOptions }
+      //{ babel: babelOptions }
     )
   ],
   format: 'es'
