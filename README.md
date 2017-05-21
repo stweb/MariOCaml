@@ -51,8 +51,8 @@ Using advanced mode in Google Closure compiler produces a better result
   
 - Bucklescript compiler is much faster, Fable has many passes: F# -> .net AST -> Fable -> Babel AST -> Babel -> JS)
 - Bucklescript JS code is more optimized when using OCAML language features:
--- record types compile to JS arrays in Bucklescript while Fable creates ES classes 
--- list type is implemented in Fable as ES class using TypeScript
+  - record types compile to JS arrays in Bucklescript while Fable creates ES classes 
+  - list type is implemented in Fable as ES class using TypeScript
 - If Fable used the same patters, it would probably get closer to Bucklescript code size
 - Bucklescript wins on the metrics, but Fable is still a good choice for people coming from .net and F#
 
