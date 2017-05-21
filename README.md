@@ -40,7 +40,7 @@ Note that Fable does not retain comments in the rollup, which makes the rollup f
   12k mario.min.js.gz  # minify (closure simple), zipped 
 ``` 
 
-Using advanced mode in Google Closure compiler produces a 
+Using advanced mode in Google Closure compiler produces a better result
 
 ```
   32k mario.min.js     # minify (closure advanced), non zipped
