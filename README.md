@@ -21,15 +21,6 @@ yarn install
 dotnet restore
 dotnet fable npm-run rollup
 ```
-## Fable sizes
-
-```
- 79329 mario.rollup.js            # dotnet fable npm-run rollup (26sec)
- 50456 mario.closure.simple.js    # dotnet fable npm-run closure:simple (9.3sec)
- 32397 mario.closure.adv.js       # dotnet fable npm-run closure:advanced (9.3sec)
-``` 
-
-
 
 ## Key Features
 * 2D Mario platformer that emulates the platformer mechanics of Super Mario Bros.
