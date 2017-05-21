@@ -303,8 +303,7 @@ function setup_sprite(img_src, bb_off_0, bb_off_1, bb_sz, max_frames, max_ticks,
 function setup_sprite2(img_src, max_frames, max_ticks, frame_size_0, frame_size_1, src_offset_0, src_offset_1) {
   const frame_size = [frame_size_0, frame_size_1];
   const src_offset = [src_offset_0, src_offset_1];
-  const tupledArg = [0, 0];
-  return setup_sprite(img_src, tupledArg[0], tupledArg[1], frame_size, max_frames, max_ticks, frame_size[0], frame_size[1], src_offset[0], src_offset[1]);
+  return setup_sprite(img_src, 0, 0, frame_size, max_frames, max_ticks, frame_size[0], frame_size[1], src_offset[0], src_offset[1]);
 }
 function make_small_player(typ, dir) {
   if (dir.tag === 1) {
@@ -1070,9 +1069,7 @@ function make$3(vel_0, vel_1, acc_0, acc_1, t, pos_0, pos_1, ctx) {
 }
 function make0(t, pos_0, pos_1, ctx) {
   const pos = [pos_0, pos_1];
-  const tupledArg = [0, 0];
-  const tupledArg_1 = [0, 0];
-  return make$3(tupledArg[0], tupledArg[1], tupledArg_1[0], tupledArg_1[1], t, pos[0], pos[1], ctx);
+  return make$3(0, 0, 0, 0, t, pos[0], pos[1], ctx);
 }
 function make_score(score, pos_0, pos_1, ctx) {
   const pos = [pos_0, pos_1];
@@ -1115,9 +1112,7 @@ function make_score(score, pos_0, pos_1, ctx) {
       t = new part_typ(3);
   }
 
-  const tupledArg = [0.5, -0.7];
-  const tupledArg_1 = [0, 0];
-  return make$3(tupledArg[0], tupledArg[1], tupledArg_1[0], tupledArg_1[1], t, pos[0], pos[1], ctx);
+  return make$3(0.5, -0.7, 0, 0, t, pos[0], pos[1], ctx);
 }
 function update_vel$1(part) {
   part.vel.x = part.vel.x + part.acc.x;
@@ -1667,25 +1662,17 @@ function kill(collid, ctx) {
     if (collid.data[0].tag === 2) {
       const pos_1 = [collid.data[2].pos.x, collid.data[2].pos.y];
       let p1;
-      const tupledArg = [-5, -5];
-      const tupledArg_1 = [0, 0.2];
       const t_1 = new part_typ(1);
-      p1 = make$3(tupledArg[0], tupledArg[1], tupledArg_1[0], tupledArg_1[1], t_1, pos_1[0], pos_1[1], ctx);
+      p1 = make$3(-5, -5, 0, 0.2, t_1, pos_1[0], pos_1[1], ctx);
       let p2;
-      const tupledArg_2 = [-3, -4];
-      const tupledArg_3 = [0, 0.2];
       const t_2 = new part_typ(1);
-      p2 = make$3(tupledArg_2[0], tupledArg_2[1], tupledArg_3[0], tupledArg_3[1], t_2, pos_1[0], pos_1[1], ctx);
+      p2 = make$3(-3, -4, 0, 0.2, t_2, pos_1[0], pos_1[1], ctx);
       let p3;
-      const tupledArg_4 = [3, -4];
-      const tupledArg_5 = [0, 0.2];
       const t_3 = new part_typ(2);
-      p3 = make$3(tupledArg_4[0], tupledArg_4[1], tupledArg_5[0], tupledArg_5[1], t_3, pos_1[0], pos_1[1], ctx);
+      p3 = make$3(3, -4, 0, 0.2, t_3, pos_1[0], pos_1[1], ctx);
       let p4;
-      const tupledArg_6 = [5, -5];
-      const tupledArg_7 = [0, 0.2];
       const t_4 = new part_typ(2);
-      p4 = make$3(tupledArg_6[0], tupledArg_6[1], tupledArg_7[0], tupledArg_7[1], t_4, pos_1[0], pos_1[1], ctx);
+      p4 = make$3(5, -5, 0, 0.2, t_4, pos_1[0], pos_1[1], ctx);
       return ofArray([p1, p2, p3, p4]);
     } else {
       return new List$1();
@@ -2189,9 +2176,7 @@ function update_loop(canvas$$1, player, objs, map_dim_0, map_dim_1) {
   const ctx = canvas$$1.getContext("2d");
   const cwidth = canvas$$1.width / 1;
   const cheight = canvas$$1.height / 1;
-  let viewport$$1;
-  const tupledArg = [cwidth, cheight];
-  viewport$$1 = make$1(tupledArg[0], tupledArg[1], map_dim[0], map_dim[1]);
+  const viewport$$1 = make$1(cwidth, cheight, map_dim[0], map_dim[1]);
   let state;
   const bgd = make_bgd(ctx);
   const vpt = update(viewport$$1, get_obj(player).pos);
@@ -2716,8 +2701,7 @@ function load() {
   });
   init();
   const tupledArg = generate(2400, 256, context);
-  const tupledArg_1 = [2400, 256];
-  update_loop(canvas, tupledArg[0], tupledArg[1], tupledArg_1[0], tupledArg_1[1]);
+  update_loop(canvas, tupledArg[0], tupledArg[1], 2400, 256);
 }
 
 function preload() {

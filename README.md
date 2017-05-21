@@ -16,10 +16,11 @@ MariOCaml is an HTML 5 canvas web-browser implementation of a well known platfor
 # F# Fable 1.x BETA Build & Rollup 
 
 Windows, Max, Linux - requires [.net Core](https://www.microsoft.com/net/download/core)
+Updated to use [Fable with Paket](http://fable.io/blog/Paket-integration.html)
 
 ```
+yarn install 
 dotnet restore
-npm install
 dotnet fable npm-run rollup
 ```
 
