@@ -29,11 +29,16 @@ npm run closure:simple
 ## Size info
 
 ```
-   7k 04-28 14:27 mario.clsoure.simple.js.gz # minify, zipped production build
-20.3k 04-28 14:27 mario.clsoure.simple.js # minify, non zipped
-  15k 04-28 14:27 mario.rollup.js.gz #  zipped
-104.1k 04-28 14:27 mario.rollup.js # non minify, non zipped
+104367 mario.rollup.js            # npm run build (1.2sec), npm run rollup with cleanup comments (2sec)
+ 20751 mario.clsoure.simple.js    # npm run closure:siple (5.3sec)
+  7202 mario.clsoure.simple.js.gz # gzip
+  7188 mario.clsoure.simple.js.gz # gzip -9
+ 20016 mario.closure.adv.js       # npm run closure:advanced (8.4sec)
+  7007 mario.closure.adv.js.gz    # gzip
+  6992 mario.closure.adv.js.gz    # gzip -9
 ```
+
+Times measured on Mac Mini 2.3GHz Core i5, 16GB, SSD, MacOS Sierra using the `time`command (real)
 
 The production build is 7K byte
 3. Open `index.html` to run!
