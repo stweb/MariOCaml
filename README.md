@@ -23,34 +23,47 @@ npm install
 dotnet fable npm-run rollup
 ```
 
-Note: manually commented exports from generated code - need to find Fable switch
-
 ## OCAML/Bucklescript Size info
 
 ```
-   7k 04-28 14:27 mario.clsoure.simple.js.gz # minify, zipped production build
-20.3k 04-28 14:27 mario.clsoure.simple.js # minify, non zipped
-  15k 04-28 14:27 mario.rollup.js.gz #  zipped
- 104k 04-28 14:27 mario.rollup.js # non minify, non zipped WITH COMMENTS
+ 104k mario.rollup.js            # non minify, non zipped WITH COMMENTS
+20.3k mario.closure.simple.js    # minify (closure simple), non zipped
+   7k mario.closure.simple.js.gz # minify (closure simple), zipped production build
 ```
 
-## Fable F# - stay tuned for futher improvements
+## Fable F# Size info 
+Note that Fable does not retain comments in the rollup, which makes the rollup file look smaller.
+
 ```
-  9.7k mario.min.js.gz # minify (closure advanced), gzip -9
-  32k mario.min.js     # minify (closure advanced), non zipped
+  78k mario.rollup.js  # non minify, non zipped BUT WITHOUT COMMENTS 
   49k mario.min.js     # minify (closure simple), non zipped
-  78k mario.rollup.js  # non minify, non zipped WITHOUT COMMENTS
+  12k mario.min.js.gz  # minify (closure simple), zipped 
+``` 
+
+Using advanced mode in Google Closure compiler produces a 
+
+```
+  32k mario.min.js     # minify (closure advanced), non zipped
+  9.7k mario.min.js.gz # minify (closure advanced), zipped
 ```
 
-## Comparison between OCAML and F#
+## Observations
   
-- F# syntax is more lightweight but mostly compatible (see diff on porting commit in GIT)
-- F# tooling is much better thanks to Ionide with live type inference
-- Fable Javascript syntax looks more natural to me and offers auto-complete / type safety
-- OCAML compiler is much faster (Fable has many passes: F# -> .net AST -> Fable -> Babel AST -> Babel -> JS)
-- Bucklescript JS code is more optimized when using OCAML language features
--- ML record types compile to JS arrays in Bucklescript while fable created ES classes with
--- ML Fable list type is implemented as ES class using TypeScript
+- Bucklescript compiler is much faster, Fable has many passes: F# -> .net AST -> Fable -> Babel AST -> Babel -> JS)
+- Bucklescript JS code is more optimized when using OCAML language features:
+-- record types compile to JS arrays in Bucklescript while Fable creates ES classes 
+-- list type is implemented in Fable as ES class using TypeScript
+- If Fable used the same patters, it would probably get closer to Bucklescript code size
+- Bucklescript wins on the metrics, but Fable is still a good choice for people coming from .net and F#
+
+Personal opinion (obviously coming from F#) 
+- F# syntax is more lightweight but mostly compatible (see diff on porting commit in GIT, no .mli header files needed.
+  LIGHT syntax could be applied in more places to, but I din't want to apply too many changes.
+- F# tooling is better thanks to [IonIde](ionide.io) with live type inference (or did I miss something similar for Bucklescript?)
+- Fable Javascript syntax looks more natural to me and offers auto-complete and more type safety for JS interop
+- As an .net F# developer it's an easier was to target JS because of the same syntax
+
+Bucklescript is doing a great job and made me curious to see what is going on in OCAML community and there are a lot of exciting things ...
 
 ## Key Features
 * 2D Mario platformer that emulates the platformer mechanics of Super Mario Bros.
