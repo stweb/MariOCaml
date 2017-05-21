@@ -2,7 +2,7 @@ F# [Fable](hhttp://fable.io/blog/Introducing-1-0-beta.html) port of [MariOCaml](
 =============
 
 Fable and Bucklescript are similar projects which both use OCAML (F# is based on OCAML) to compile to JavaScript.
-I ported the OCAML version to F# to compare the two approaches in terms of code readability, tooling and generated code.
+I ported the OCAML version to F# to compare the two approaches.
 
 [MariOCaml](https://mahsu.github.io/mariocaml/)  is a port of Mahsu's work to the excellent [BuckleScript](https://github.com/bloomberg/bucklescript) compiler, for the whole
 game it generates only *7K* byte gzipped JS and takes 0.57s to build (including the start up time of npm).
@@ -10,8 +10,6 @@ game it generates only *7K* byte gzipped JS and takes 0.57s to build (including 
 MariOCaml is an HTML 5 canvas web-browser implementation of a well known platformer written exclusively in OCaml.
 
 ![Gameplay preview](https://github.com/mahsu/MariOCaml/raw/master/screenshots/preview.gif)
-
-[Try MariOCaml build with Bucklescript](http://zhanghongbo.me/MariOCaml/)
 
 # F# Fable 1.x BETA Build & Rollup 
 
@@ -23,48 +21,15 @@ yarn install
 dotnet restore
 dotnet fable npm-run rollup
 ```
-
-## OCAML/Bucklescript Size info
-
-```
- 104k mario.rollup.js            # non minify, non zipped WITH COMMENTS
-20.3k mario.closure.simple.js    # minify (closure simple), non zipped
-   7k mario.closure.simple.js.gz # minify (closure simple), zipped production build
-```
-
-## Fable F# Size info 
-Note that Fable does not retain comments in the rollup, which makes the rollup file look smaller.
+## Fable sizes
 
 ```
-  78k mario.rollup.js  # non minify, non zipped BUT WITHOUT COMMENTS 
-  49k mario.min.js     # minify (closure simple), non zipped
-  12k mario.min.js.gz  # minify (closure simple), zipped 
+ 79329 mario.rollup.js            # dotnet fable npm-run rollup (26sec)
+ 50456 mario.closure.simple.js    # dotnet fable npm-run closure:simple (9.3sec)
+ 32397 mario.closure.adv.js       # dotnet fable npm-run closure:advanced (9.3sec)
 ``` 
 
-Using advanced mode in Google Closure compiler produces a better result
 
-```
-  32k mario.min.js     # minify (closure advanced), non zipped
-  9.7k mario.min.js.gz # minify (closure advanced), zipped
-```
-
-## Observations
-  
-- Bucklescript compiler is much faster, Fable has many passes: F# -> .net AST -> Fable -> Babel AST -> Babel -> JS)
-- Bucklescript JS code is more optimized when using OCAML language features:
-  - record types compile to JS arrays in Bucklescript while Fable creates ES classes 
-  - list type is implemented in Fable as ES class using TypeScript
-- If Fable used the same patters, it would probably get closer to Bucklescript code size
-- Bucklescript wins on the metrics, but Fable is still a good choice for people coming from .net and F#
-
-Personal opinion (obviously coming from F#) 
-- F# syntax is more lightweight but mostly compatible (see diff on porting commit in GIT, no .mli header files needed.
-  LIGHT syntax could be applied in more places to, but I din't want to apply too many changes.
-- F# tooling is better thanks to [IonIde](ionide.io) with live type inference (or did I miss something similar for Bucklescript?)
-- Fable Javascript syntax looks more natural to me and offers auto-complete and more type safety for JS interop
-- As an .net F# developer it's an easier was to target JS because of the same syntax
-
-Bucklescript is doing a great job and made me curious to see what is going on in OCAML community and there are a lot of exciting things ...
 
 ## Key Features
 * 2D Mario platformer that emulates the platformer mechanics of Super Mario Bros.
