@@ -5,9 +5,8 @@ open Object
 open Actors
 open Viewport
 open Particle
-open Fable.Import.Browser
-open OCaml
-
+open Browser
+open Browser.Types
 
 (* Represents the values of relevant key bindings. *)
 type keys = {
@@ -133,11 +132,9 @@ let obj_at_pos dir (pos: xy) (collids: Object.collidable list)
                                             : Object.collidable list =
   match dir with
   | Left -> List.filter (fun (col: Object.collidable) ->
-      (get_obj col).pos.y = pos.y && (get_obj col).pos.x = pos.x - 16.)
-            collids
+      (get_obj col).pos.y = pos.y && (get_obj col).pos.x = pos.x - 16.) collids
   | _ -> List.filter (fun (col: Object.collidable) ->
-      (get_obj col).pos.y = pos.y && (get_obj col).pos.x = pos.x + 16.)
-            collids
+      (get_obj col).pos.y = pos.y && (get_obj col).pos.x = pos.x + 16.) collids
 
 (* Returns whether the object at a given position is a block *)
 let is_block dir pos collids =
@@ -426,7 +423,6 @@ let keydown (evt:KeyboardEvent)  =
   | 40 | 83 -> pressed_keys.down <- true
   | 66 -> pressed_keys.bbox <- (pressed_keys.bbox + 1) % 2
   | _ -> ()
-  null
 
 (* Keyup event handler translates a key release *)
 let keyup (evt:KeyboardEvent)  =
@@ -436,4 +432,4 @@ let keyup (evt:KeyboardEvent)  =
   | 37 | 65 -> pressed_keys.left <- false
   | 40 | 83 -> pressed_keys.down <- false
   | _ -> ()
-  null
+

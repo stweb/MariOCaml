@@ -1,7 +1,6 @@
 module Particle
 
 open Actors
-open Sprite
 
 type part_params = {
   sprite: Sprite.sprite;

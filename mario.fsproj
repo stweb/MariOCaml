@@ -1,27 +1,24 @@
-<Project Sdk="FSharp.NET.Sdk;Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="OCaml.fs" />    
+    <Compile Include="OCaml.fs" />
     <Compile Include="Mario_util.fs" />
-
     <Compile Include="Actors.fs" />
     <Compile Include="Sprite.fs" />
     <Compile Include="Viewport.fs" />
-    
     <Compile Include="Particle.fs" />
     <Compile Include="Object.fs" />
-    <Compile Include="ProceduralGenerator.fs" />
-  
     <Compile Include="Draw.fs" />
+    <Compile Include="ProceduralGenerator.fs" />
     <Compile Include="Director.fs" />
     <Compile Include="Main.fs" />
- 
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FSharp.NET.Sdk" Version="1.0.*" PrivateAssets="All" />
-    <DotNetCliToolReference Include="dotnet-fable" Version="1.0.4" />
+    <PackageReference Include="Fable.Browser.Dom" Version="2.1.2" />
+    <PackageReference Include="Fable.Browser.Event" Version="1.2.1" />
+    <PackageReference Include="Fable.Core" Version="3.1.6" />
+    <PackageReference Include="Fable.Import.Browser" Version="1.4.0" />
   </ItemGroup>
-  <Import Project=".paket\Paket.Restore.targets" />
 </Project>

@@ -1,4 +1,4 @@
-F# [Fable](hhttp://fable.io/blog/Introducing-1-0-beta.html) port of [MariOCaml](https://mahsu.github.io/mariocaml/) from OCAML [BuckleScript](https://github.com/bloomberg/bucklescript)
+F# [Fable](https://fable.io) port of [MariOCaml](https://mahsu.github.io/mariocaml/) from OCAML [BuckleScript](https://github.com/bloomberg/bucklescript)
 =============
 
 Fable and Bucklescript are similar projects which both use OCAML (F# is based on OCAML) to compile to JavaScript.
@@ -11,15 +11,15 @@ MariOCaml is an HTML 5 canvas web-browser implementation of a well known platfor
 
 ![Gameplay preview](https://github.com/mahsu/MariOCaml/raw/master/screenshots/preview.gif)
 
-# F# Fable 1.x BETA Build & Rollup 
+# F# Fable 3 Build
 
 Windows, Max, Linux - requires [.net Core](https://www.microsoft.com/net/download/core)
-Updated to use [Fable with Paket](http://fable.io/blog/Paket-integration.html)
 
 ```
-yarn install 
-dotnet restore
-dotnet fable npm-run rollup
+dotnet tool restore
+dotnet build
+dotnet fable .\mario.fsproj --optimize
+parcel build .\Main.fs.js -d public -o mario.js
 ```
 
 ## Key Features

@@ -1,11 +1,13 @@
 module Sprite
 
 open Actors
-open Fable.Import.Browser
+open Browser
+open Browser.Types
 
 // Get the canvas context for drawing
-let canvas = document.getElementsByTagName_canvas().[0]
+let mutable canvas : Browser.Types.HTMLCanvasElement = unbox window.document.getElementById "canvas" 
 let context = canvas.getContext_2d()
+let createImage() : Browser.Types.HTMLImageElement = unbox document.createElement "img"
 
 type xy = float * float
 
@@ -148,7 +150,7 @@ let make_type typ (dir : Actors.dir_1d) =
 
 (* Makes a sprite from provided [param]. *)
 let make_from_params param context =
-  let img = document.createElement_img()
+  let img = createImage()
   img.src <- param.img_src;
   {
     param = param 
@@ -185,7 +187,7 @@ let update_animation (spr: sprite) =
 (*Transform_enemy is used in order to switch the direction an enemy faces.*)
 let transform_enemy enemy_typ spr dir =
   let para = make_enemy  (enemy_typ,dir)
-  let img = document.createElement_img() 
+  let img = createImage() 
   img.src <- para.img_src
   spr.param <- para
   spr.img <- img

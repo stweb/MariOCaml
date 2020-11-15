@@ -3,8 +3,7 @@ module ProceduralGenerator
 open Actors
 open Object
 open OCaml
-open Fable.Core
-open Fable.Import.Browser
+open Browser.Types
 
 (*Note: Canvas is 512 by 256 (w*h) -> 32 by 16 blocks*)
 

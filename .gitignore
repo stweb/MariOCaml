@@ -3,3 +3,7 @@ obj
 bin
 public
 .DS_Store
+*.fs.js
+.fake
+.ionide
+/.cache

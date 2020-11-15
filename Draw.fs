@@ -1,12 +1,10 @@
 module Draw
 
-open Object
 open Sprite
 open OCaml
 open Fable.Core
-open Fable.Import.Browser
+open Browser.Types
 
-//let get_context canvas = canvas?getContext "2d"
 let context = canvas.getContext_2d()
 
 let render_bbox sprite (posx,posy) =
@@ -36,27 +34,19 @@ let draw_bgd bgd off_x =
 (*Used for animation updating. Canvas is cleared each frame and redrawn.*)
 let clear_canvas (canvas:HTMLCanvasElement) =
   let context = canvas.getContext_2d()
-  let cwidth =  canvas.width in
-  let cheight =  canvas.height in
-  context.clearRect(0., 0., cwidth, cheight)
+  context.clearRect(0., 0., canvas.width, canvas.height)
 
 (*Displays the text for score and coins.*)
-let hud (canvas:HTMLCanvasElement) score coins =
-  let score_string = string_of_int score in
-  let coin_string = string_of_int coins in
-  let context = canvas.getContext_2d()
+let hud (canvas:HTMLCanvasElement) (score:int) (coins:int) =
   context.font <- "10px 'Press Start 2P'"
-  context.fillText("Score: " + score_string, canvas.width - 140., 18.)
-  context.fillText("Coins: " + coin_string, 120., 18.)
-  ()
+  context.fillText("Score: " + string_of_int score, canvas.width - 140., 18.)
+  context.fillText("Coins: " + string_of_int coins, 120., 18.)
 
 (*Displays the fps.*)
 let fps canvas fps_val =
-  let fps_str = int fps_val |> string_of_int in
   //let canvas = canvasElementToJsObj canvas in
   //let context = canvasRenderingContext2DToJsObj (canvas?getContext "2d") in
-  context.fillText(fps_str, 10., 18.)
-  ()
+  context.fillText(string_of_int fps_val, 10., 18.)
 
 (*game_win displays a black screen when you finish a game.*)
 let game_win (ctx:CanvasRenderingContext2D) =

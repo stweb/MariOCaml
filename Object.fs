@@ -2,9 +2,7 @@ module Object
 
 open Sprite
 open Actors
-open Particle
-open OCaml
-open Fable.Import.Browser
+open Browser.Types
 
 (*Variables*)
 let friction = 0.9

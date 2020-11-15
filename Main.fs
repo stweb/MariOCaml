@@ -1,10 +1,9 @@
 module Main
 
-open Actors
 open Sprite
-open Object
-open Director
-open Fable.Import.Browser
+open Browser
+open Browser.Types
+open Fable.Core.JsInterop
 
 module Pg = ProceduralGenerator
 
@@ -18,8 +17,8 @@ let private load() =
   let canvas_id = "canvas"
   let canvas = document.getElementById(canvas_id) :?> HTMLCanvasElement 
   let context = canvas.getContext_2d() 
-  document.addEventListener_keydown (fun e -> Director.keydown e) 
-  document.addEventListener_keyup (fun e -> Director.keyup e)
+  document.addEventListener("keydown", fun e -> Director.keydown !!e) 
+  document.addEventListener("keyup", fun e -> Director.keyup !!e)
   Pg.init() 
   Director.update_loop canvas (Pg.generate level_width level_height context) (level_width,level_height)
   |> ignore
@@ -34,19 +33,17 @@ let private preload() =
 
   let inc_counter() =
     loadCount := !loadCount + 1;
-    if !loadCount = imgsToLoad then load() else ()
-    null
+    if !loadCount = imgsToLoad then load() else ()    
 
   [ "blocks.png";"items.png";"enemies.png";"mario-small.png" ]
   |> List.iter (fun img_src ->
-    let img_src = root_dir + img_src in
-    let img = document.createElement_img() in
-    img.src <- img_src
-    img.addEventListener_load(fun ev -> inc_counter())
+    let img = createImage()
+    img.src <- root_dir + img_src 
+    img.addEventListener( "load", fun ev -> inc_counter())
   )
   ()
 
-window.addEventListener_load(fun _ -> 
+window.addEventListener("load", fun _ -> 
   preload()
-  null
+  ()
 )
