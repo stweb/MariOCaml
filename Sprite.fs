@@ -7,7 +7,7 @@ open Browser.Types
 // Get the canvas context for drawing
 let mutable canvas : Browser.Types.HTMLCanvasElement = unbox window.document.getElementById "canvas" 
 let context = canvas.getContext_2d()
-let createImage() : Browser.Types.HTMLImageElement = unbox document.createElement "img"
+let inline createImage() : Browser.Types.HTMLImageElement = unbox document.createElement "img"
 
 type xy = float * float
 
